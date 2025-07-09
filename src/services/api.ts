@@ -24,15 +24,19 @@ export class ChatAPI {
 
   private async sendToOpenAI(messages: any[]): Promise<ChatResponse> {
     const formattedMessages = messages.map(msg => {
+      const content: any[] = [{ type: 'text', text: msg.content }];
+      
       if (msg.image && msg.role === 'user') {
+        content.push({ type: 'image_url', image_url: { url: msg.image } });
+      }
+      
+      if (msg.role === 'user' && (msg.image || msg.file)) {
         return {
           role: msg.role,
-          content: [
-            { type: 'text', text: msg.content },
-            { type: 'image_url', image_url: { url: msg.image } }
-          ]
+          content: content
         };
       }
+      
       return { role: msg.role, content: msg.content };
     });
 

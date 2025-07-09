@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Bot } from 'lucide-react';
+import { User, Bot, FileText } from 'lucide-react';
 import { Message } from '../types';
 
 interface MessageBubbleProps {
@@ -38,6 +38,18 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
             </div>
           )}
           <div className="whitespace-pre-wrap">{message.content}</div>
+          {message.file && (
+            <div className="mt-2 p-2 bg-black bg-opacity-10 rounded border-l-2 border-gray-400">
+              <div className="flex items-center gap-2 mb-1">
+                <FileText className="w-3 h-3" />
+                <span className="text-xs font-medium">{message.file.name}</span>
+              </div>
+              <div className="text-xs opacity-75 max-h-20 overflow-y-auto">
+                {message.file.content.substring(0, 200)}
+                {message.file.content.length > 200 && '...'}
+              </div>
+            </div>
+          )}
         </div>
         <div className="text-xs text-gray-500 mt-1">
           {message.timestamp.toLocaleTimeString()}

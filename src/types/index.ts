@@ -3,6 +3,11 @@ export interface Message {
   role: 'user' | 'assistant';
   content: string;
   image?: string;
+  file?: {
+    name: string;
+    type: string;
+    content: string;
+  };
   timestamp: Date;
 }
 

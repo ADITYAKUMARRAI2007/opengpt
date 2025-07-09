@@ -7,7 +7,7 @@ import { MessageBubble } from './components/MessageBubble';
 import { ChatInput } from './components/ChatInput';
 import { VoiceRecorder } from './components/VoiceRecorder';
 
-function App() {
+export default function App() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,17 +39,24 @@ function App() {
     chatAPI.current = new ChatAPI(config);
   };
 
-  const handleSendMessage = async (content: string, image?: string) => {
+  const handleSendMessage = async (content: string, image?: string, file?: { name: string; type: string; content: string }) => {
     if (!chatAPI.current) {
       setIsModalOpen(true);
       return;
     }
 
+    // Combine message content with file content if present
+    let fullContent = content;
+    if (file) {
+      fullContent = `${content}\n\n[File: ${file.name}]\n${file.content}`;
+    }
+
     const userMessage: Message = {
       id: Date.now().toString(),
       role: 'user',
-      content,
+      content: fullContent,
       image,
+      file,
       timestamp: new Date()
     };
 
@@ -199,5 +206,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
