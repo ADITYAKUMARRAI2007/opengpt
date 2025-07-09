@@ -38,7 +38,8 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onTranscription, d
         }
       };
 
-      recognition.onerror = (event) => {
+      recognition.onerror = (event: { error: string }) => {
+
         console.error('Speech recognition error:', event.error);
         setIsRecording(false);
       };
